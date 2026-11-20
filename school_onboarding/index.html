@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إعداد مدرسة جديدة — نظام مدارس القرآن</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #eef5f2;
+      --card: #ffffff;
+      --teal-dark: #0f382b;
+      --teal: #254941;
+      --emerald: #0c5140;
+      --gold: #d4a13a;
+      --gold-soft: #f7dfa0;
+      --text: #111827;
+      --muted: #4b5563;
+      --border: #d1e3dc;
+      --success-bg: #ecfdf5;
+      --success-text: #065f46;
+      --error-bg: #fef2f2;
+      --error-text: #991b1b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Cairo", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(165deg, #0f382b 0%, #1c473c 35%, #eef5f2 35%, #eef5f2 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px 14px 40px;
+    }
+
+    .container {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 223, 160, 0.7);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--gold-soft);
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.6;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      border: 1.5px solid rgba(212, 161, 58, 0.55);
+      box-shadow: 0 18px 42px rgba(15, 56, 43, 0.14);
+      padding: 20px 18px;
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 10px;
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--teal-dark);
+    }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--teal-dark);
+      color: var(--gold-soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .desc {
+      margin: 0 0 14px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .trust-box {
+      background: #f3faf7;
+      border: 1px solid #cce6dc;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      color: var(--teal-dark);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--teal);
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--gold);
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.99); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal-dark), var(--emerald));
+      color: #fff;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #e7be62, #c98e25);
+      color: #102a22;
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--teal-dark);
+      border: 1.5px solid var(--teal-dark);
+    }
+
+    .account-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--success-bg);
+      border: 1px solid #a7f3d0;
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: var(--success-text);
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
+    .account-pill button {
+      background: transparent;
+      border: 1px solid #059669;
+      color: #065f46;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .progress-list {
+      list-style: none;
+      margin: 14px 0 0;
+      padding: 0;
+    }
+
+    .progress-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      background: #f9fafb;
+    }
+
+    .progress-list li.active {
+      background: #fef9ec;
+      color: #92400e;
+      font-weight: 700;
+      border: 1px solid #fde68a;
+    }
+
+    .progress-list li.done {
+      background: var(--success-bg);
+      color: var(--success-text);
+      font-weight: 700;
+    }
+
+    .progress-list li.error {
+      background: var(--error-bg);
+      color: var(--error-text);
+      font-weight: 700;
+    }
+
+    .alert {
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.65;
+      margin-top: 12px;
+    }
+
+    .alert-error {
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid #fecaca;
+    }
+
+    .alert-success {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid #a7f3d0;
+    }
+
+    .hidden { display: none !important; }
+
+    .dev-toggle {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .dev-toggle button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="badge">نظام مدارس القرآن — بوابة الإعداد الآمنة</div>
+      <h1>إنشاء وتجهيز مدرسة جديدة</h1>
+      <p>أكمل خطوتين بسيطتين لإنشاء قاعدة بيانات مستقلة ومحمية لمدرستك والعودة تلقائياً للتطبيق</p>
+    </div>
+
+    <!-- Developer Config Warning if OAuth Client ID is missing -->
+    <div id="missingClientBanner" class="card hidden">
+      <h2 class="step-title"><span class="step-num">!</span> يلزم إضافة معرّف Google OAuth Client ID</h2>
+      <p class="desc">
+        لتعمل هذه الصفحة تلقائياً دون إظهار شاشة Cloud Shell، يرجى من مطوّر التطبيق إنشاء
+        <strong>OAuth 2.0 Web Client ID</strong> في Google Cloud Console ووضعه داخل
+        <code>DEFAULT_GOOGLE_OAUTH_CLIENT_ID</code> في هذا الملف، أو إدخاله مؤقتاً أدناه للاختبار:
+      </p>
+      <div class="field">
+        <label for="manualClientIdInput">معرّف Web Client ID</label>
+        <input id="manualClientIdInput" type="text" dir="ltr" placeholder="xxxx.apps.googleusercontent.com" />
+      </div>
+      <button class="btn btn-outline" type="button" onclick="saveManualClientId()">حفظ واستخدام المعرّف الآن</button>
+    </div>
+
+    <!-- Step 1: Select or Create Gmail Account -->
+    <div class="card">
+      <h2 class="step-title"><span class="step-num">1</span> اختيار حساب Gmail أو إنشاء حساب جديد</h2>
+      <div class="trust-box">
+        <strong>خصوصيتك محمية بالكامل:</strong> لا يطلب هذا الموقع كلمة مرور Gmail أبداً. يتم التحقق عبر شاشة
+        Google الرسمية الآمنة، ويمكنك اختيار <strong>حساب خاص بالمدرسة</strong> أو الضغط على
+        <strong>«إنشاء حساب»</strong> بدلاً من استخدام حسابك الشخصي الرئيسي.
+      </div>
+
+      <div id="signedOutBox">
+        <button id="googleSelectBtn" class="btn btn-gold" type="button" onclick="startGoogleAccountPicker()">
+          اختيار حساب Gmail أو إنشاء حساب جديد
+        </button>
+      </div>
+
+      <div id="signedInBox" class="hidden">
+        <div class="account-pill">
+          <span id="signedInEmail">تم الاتصال بالحساب</span>
+          <button type="button" onclick="switchGoogleAccount()">تغيير الحساب</button>
+        </div>
+      </div>
+
+      <div id="authErrorBox" class="alert alert-error hidden"></div>
+    </div>
+
+    <!-- Step 2: School & Admin Info -->
+    <div id="step2Card" class="card">
+      <h2 class="step-title"><span class="step-num">2</span> بيانات المدرسة وحساب المشرف</h2>
+      <p class="desc">أدخل اسم مدرستك وبريد وكلمة مرور المشرف للدخول إلى التطبيق بعد انتهاء التجهيز.</p>
+
+      <div class="field">
+        <label for="schoolNameInput">اسم المدرسة *</label>
+        <input id="schoolNameInput" type="text" placeholder="مثال: مدرسة الفرقان لتحفيظ القرآن" />
+      </div>
+
+      <div class="field">
+        <label for="adminEmailInput">البريد الإلكتروني لمشرف المدرسة *</label>
+        <input id="adminEmailInput" type="email" dir="ltr" placeholder="admin@school.org" />
+      </div>
+
+      <div class="field">
+        <label for="adminPasswordInput">كلمة مرور المشرف (6 أحرف على الأقل) *</label>
+        <input id="adminPasswordInput" type="password" dir="ltr" placeholder="••••••" />
+      </div>
+
+      <div class="field">
+        <label for="regionSelect">منطقة استضافة قاعدة البيانات</label>
+        <select id="regionSelect">
+          <option value="eur3" selected>أوروبا (eur3 — الأسرع لشمال إفريقيا والشرق الأوسط)</option>
+          <option value="nam5">أمريكا الشمالية (nam5)</option>
+          <option value="europe-west1">بلجيكا (europe-west1)</option>
+        </select>
+      </div>
+
+      <button id="provisionBtn" class="btn btn-primary" type="button" onclick="startProvisioning()">
+        إنشاء المدرسة وتجهيز السحابة تلقائياً
+      </button>
+
+      <div id="formErrorBox" class="alert alert-error hidden"></div>
+      <div id="tosRecoveryBox" class="alert alert-error hidden">
+        <strong>خطوة مطلوبة لمرة واحدة للحسابات الجديدة:</strong><br />
+        يبدو أن هذا الحساب يفتح Google Cloud لأول مرة ولم يوافق بعد على شروط الخدمة. افتح الرابط التالي واضغط «موافق»، ثم ارجع واضغط زر الإنشاء مجدداً:
+        <div style="margin-top: 8px;">
+          <a class="btn btn-outline" href="https://console.cloud.google.com/" target="_blank" rel="noopener">
+            الموافقة على شروط Google Cloud
+          </a>
+        </div>
+      </div>
+
+      <ul id="progressList" class="progress-list hidden">
+        <li id="st1">1. إنشاء مشروع سحابي مستقل للمدرسة</li>
+        <li id="st2">2. تفعيل خدمات Firebase و Firestore والمصادقة</li>
+        <li id="st3">3. ربط Firebase وتوليد ملف google-services.json</li>
+        <li id="st4">4. إنشاء قاعدة البيانات السحابية Firestore</li>
+        <li id="st5">5. نشر قواعد الأمان الخاصة بتطبيق أهل القرآن</li>
+        <li id="st6">6. تفعيل تسجيل الدخول وإنشاء حساب المشرف</li>
+      </ul>
+    </div>
+
+    <!-- Step 3: Completion -->
+    <div id="doneCard" class="card hidden">
+      <h2 class="step-title"><span class="step-num">✓</span> تم تجهيز مدرستك بنجاح!</h2>
+      <div class="alert alert-success" style="margin-top:0; margin-bottom: 14px;">
+        تم إنشاء المشروع السحابي وقاعدة البيانات ونشر قواعد الحماية وحساب المشرف بنجاح.
+        يمكنك الآن العودة للتطبيق مباشرة لإتمام التفعيل.
+      </div>
+      <a id="returnAppBtn" class="btn btn-gold" href="#" style="margin-bottom: 10px;">
+        العودة للتطبيق وتفعيل المدرسة الآن
+      </a>
+      <button id="downloadJsonBtn" class="btn btn-outline" type="button" onclick="downloadGoogleServicesFile()">
+        تنزيل ملف google-services.json
+      </button>
+    </div>
+
+    <div class="dev-toggle">
+      <button type="button" onclick="toggleManualClientBox()">إعدادات المطور (Web Client ID)</button>
+    </div>
+  </div>
+
+  <script>
+    // ضع هنا Google OAuth 2.0 Web Client ID الخاص بك من Google Cloud Console -> Credentials
+    const DEFAULT_GOOGLE_OAUTH_CLIENT_ID = "";
+    const ANDROID_PACKAGE_NAME = "com.aistudio.ahlalquran.quranicm";
+    const OAUTH_SCOPES = [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ].join(" ");
+
+    let accessToken = "";
+    let generatedGoogleServices = null;
+    let generatedJsonString = "";
+
+    function getRedirectUri() {
+      return window.location.origin + window.location.pathname;
+    }
+
+    function getClientId() {
+      const fromUrl = new URLSearchParams(window.location.search).get("client_id");
+      if (fromUrl) {
+        sessionStorage.setItem("ahl_oauth_client_id", fromUrl.trim());
+      }
+      return (
+        DEFAULT_GOOGLE_OAUTH_CLIENT_ID ||
+        sessionStorage.getItem("ahl_oauth_client_id") ||
+        localStorage.getItem("ahl_oauth_client_id") ||
+        ""
+      ).trim();
+    }
+
+    function toggleManualClientBox() {
+      document.getElementById("missingClientBanner").classList.toggle("hidden");
+    }
+
+    function saveManualClientId() {
+      const val = document.getElementById("manualClientIdInput").value.trim();
+      if (!val || !val.includes(".apps.googleusercontent.com")) {
+        alert("يرجى إدخال OAuth Web Client ID صحيح.");
+        return;
+      }
+      localStorage.setItem("ahl_oauth_client_id", val);
+      document.getElementById("missingClientBanner").classList.add("hidden");
+    }
+
+    function showAuthError(msg) {
+      const box = document.getElementById("authErrorBox");
+      box.textContent = msg;
+      box.classList.remove("hidden");
+    }
+
+    function showFormError(msg) {
+      const box = document.getElementById("formErrorBox");
+      box.textContent = msg;
+      box.classList.remove("hidden");
+    }
+
+    function startGoogleAccountPicker() {
+      const clientId = getClientId();
+      if (!clientId) {
+        document.getElementById("missingClientBanner").classList.remove("hidden");
+        showAuthError("يلزم إعداد Google OAuth Web Client ID أولاً لتشغيل تسجيل الدخول.");
+        return;
+      }
+
+      // حفظ القيم المكتوبة قبل التحويل
+      sessionStorage.setItem("ahl_draft_school", document.getElementById("schoolNameInput").value);
+      sessionStorage.setItem("ahl_draft_email", document.getElementById("adminEmailInput").value);
+
+      const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+      authUrl.searchParams.set("client_id", clientId);
+      authUrl.searchParams.set("redirect_uri", getRedirectUri());
+      authUrl.searchParams.set("response_type", "token");
+      authUrl.searchParams.set("scope", OAUTH_SCOPES);
+      // إجبار Google على عرض شاشة اختيار الحساب أو إنشاء حساب Gmail جديد
+      authUrl.searchParams.set("prompt", "select_account");
+      authUrl.searchParams.set("include_granted_scopes", "true");
+
+      window.location.href = authUrl.toString();
+    }
+
+    function switchGoogleAccount() {
+      accessToken = "";
+      sessionStorage.removeItem("ahl_access_token");
+      document.getElementById("signedInBox").classList.add("hidden");
+      document.getElementById("signedOutBox").classList.remove("hidden");
+      startGoogleAccountPicker();
+    }
+
+    async function handleOAuthReturn() {
+      if (!getClientId()) {
+        document.getElementById("missingClientBanner").classList.remove("hidden");
+      }
+
+      const draftSchool = sessionStorage.getItem("ahl_draft_school");
+      const draftEmail = sessionStorage.getItem("ahl_draft_email");
+      if (draftSchool) document.getElementById("schoolNameInput").value = draftSchool;
+      if (draftEmail) document.getElementById("adminEmailInput").value = draftEmail;
+
+      if (window.location.hash && window.location.hash.length > 1) {
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const token = hashParams.get("access_token");
+        const err = hashParams.get("error");
+        // مسح التوكن من شريط العنوان فوراً
+        history.replaceState(null, "", getRedirectUri());
+
+        if (err) {
+          showAuthError("تم إلغاء أو تعذر اختيار حساب Google: " + err);
+          return;
+        }
+        if (token) {
+          accessToken = token;
+          sessionStorage.setItem("ahl_access_token", token);
+        }
+      } else {
+        const saved = sessionStorage.getItem("ahl_access_token");
+        if (saved) accessToken = saved;
+      }
+
+      if (accessToken) {
+        try {
+          const resp = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+            headers: { Authorization: "Bearer " + accessToken }
+          });
+          if (!resp.ok) throw new Error("انتهت صلاحية الجلسة، يرجى إعادة اختيار الحساب.");
+          const info = await resp.json();
+          document.getElementById("signedOutBox").classList.add("hidden");
+          document.getElementById("signedInBox").classList.remove("hidden");
+          document.getElementById("signedInEmail").textContent = "الحساب المختار: " + (info.email || "حساب Google");
+          if (!document.getElementById("adminEmailInput").value && info.email) {
+            document.getElementById("adminEmailInput").value = info.email;
+          }
+        } catch (e) {
+          accessToken = "";
+          sessionStorage.removeItem("ahl_access_token");
+          showAuthError(e.message || "تعذر التحقق من جلسة Google.");
+        }
+      }
+    }
+
+    function setStepState(id, state) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove("active", "done", "error");
+      if (state) el.classList.add(state);
+    }
+
+    async function apiFetch(url, options = {}, retries = 2) {
+      for (let attempt = 0; attempt <= retries; attempt++) {
+        const headers = Object.assign(
+          { Authorization: "Bearer " + accessToken, "Content-Type": "application/json" },
+          options.headers || {}
+        );
+        const resp = await fetch(url, Object.assign({}, options, { headers }));
+        const text = await resp.text();
+        let data = {};
+        try { data = text ? JSON.parse(text) : {}; } catch (_) { data = { raw: text }; }
+        if (resp.ok) return data;
+
+        const retryable = resp.status === 404 || resp.status === 429 || resp.status >= 500;
+        if (attempt < retries && retryable) {
+          await new Promise((r) => setTimeout(r, 2500));
+          continue;
+        }
+        const errMsg = data?.error?.message || data?.raw || ("HTTP " + resp.status);
+        const err = new Error(errMsg);
+        err.status = resp.status;
+        err.data = data;
+        throw err;
+      }
+    }
+
+    async function pollOperation(baseUrl, opName, maxPolls = 35) {
+      for (let i = 0; i < maxPolls; i++) {
+        const op = await apiFetch(`${baseUrl}/${opName}`, { method: "GET" }, 2);
+        if (op.done) {
+          if (op.error) {
+            throw new Error(op.error.message || JSON.stringify(op.error));
+          }
+          return op;
+        }
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+      throw new Error("استغرقت العملية وقتاً أطول من المعتاد، يرجى المحاولة مرة أخرى.");
+    }
+
+    function base64ToUtf8(b64) {
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder("utf-8").decode(bytes);
+    }
+
+    function utf8ToUrlSafeBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let bin = "";
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    async function loadFirestoreRulesText() {
+      const resp = await fetch("./firestore.rules", { cache: "no-store" });
+      if (!resp.ok) {
+        throw new Error("تعذر تحميل ملف قواعد الحماية firestore.rules من الخادم.");
+      }
+      return await resp.text();
+    }
+
+    async function startProvisioning() {
+      document.getElementById("formErrorBox").classList.add("hidden");
+      document.getElementById("tosRecoveryBox").classList.add("hidden");
+
+      if (!accessToken) {
+        showFormError("يرجى أولاً اختيار حساب Gmail (أو إنشاء حساب جديد) في الخطوة الأولى.");
+        return;
+      }
+
+      const schoolName = document.getElementById("schoolNameInput").value.trim();
+      const adminEmail = document.getElementById("adminEmailInput").value.trim().toLowerCase();
+      const adminPassword = document.getElementById("adminPasswordInput").value;
+      const locationId = document.getElementById("regionSelect").value;
+
+      if (!schoolName) {
+        showFormError("يرجى إدخال اسم المدرسة.");
+        return;
+      }
+      if (!adminEmail.includes("@") || !adminEmail.includes(".")) {
+        showFormError("يرجى إدخال بريد إلكتروني صحيح للمشرف.");
+        return;
+      }
+      if (!adminPassword || adminPassword.length < 6) {
+        showFormError("كلمة مرور المشرف يجب أن تتكون من 6 أحرف على الأقل.");
+        return;
+      }
+
+      const btn = document.getElementById("provisionBtn");
+      btn.disabled = true;
+      document.getElementById("progressList").classList.remove("hidden");
+      ["st1", "st2", "st3", "st4", "st5", "st6"].forEach((id) => setStepState(id, ""));
+
+      const randomSuffix = Math.random().toString(36).slice(2, 7);
+      const projectId = `ahl-alquran-${Date.now().toString().slice(-6)}-${randomSuffix}`;
+
+      let activeStep = "st1";
+      try {
+        // 1. Create GCP Project
+        setStepState("st1", "active");
+        const createProjOp = await apiFetch("https://cloudresourcemanager.googleapis.com/v1/projects", {
+          method: "POST",
+          body: JSON.stringify({ projectId, name: "Ahl AlQuran School" })
+        });
+        if (createProjOp.name) {
+          await pollOperation("https://cloudresourcemanager.googleapis.com/v1", createProjOp.name);
+        }
+        setStepState("st1", "done");
+
+        // 2. Enable APIs
+        activeStep = "st2";
+        setStepState("st2", "active");
+        const enableOp = await apiFetch(
+          `https://serviceusage.googleapis.com/v1/projects/${projectId}/services:batchEnable`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              serviceIds: [
+                "firebase.googleapis.com",
+                "firestore.googleapis.com",
+                "identitytoolkit.googleapis.com",
+                "firebaserules.googleapis.com",
+                "cloudresourcemanager.googleapis.com"
+              ]
+            })
+          },
+          3
+        );
+        if (enableOp.name) {
+          await pollOperation("https://serviceusage.googleapis.com/v1", enableOp.name);
+        }
+        setStepState("st2", "done");
+
+        // 3. Add Firebase & Register Android App + google-services.json
+        activeStep = "st3";
+        setStepState("st3", "active");
+        const addFbOp = await apiFetch(
+          `https://firebase.googleapis.com/v1beta1/projects/${projectId}:addFirebase`,
+          { method: "POST", body: JSON.stringify({}) },
+          4
+        );
+        if (addFbOp.name) {
+          await pollOperation("https://firebase.googleapis.com/v1beta1", addFbOp.name);
+        }
+
+        const createAppOp = await apiFetch(
+          `https://firebase.googleapis.com/v1beta1/projects/${projectId}/androidApps`,
+          {
+            method: "POST",
+            body: JSON.stringify({ packageName: ANDROID_PACKAGE_NAME, displayName: "Ahl AlQuran" })
+          },
+          3
+        );
+        let appId = createAppOp.response?.appId || "";
+        if (!appId && createAppOp.name) {
+          const doneAppOp = await pollOperation("https://firebase.googleapis.com/v1beta1", createAppOp.name);
+          appId = doneAppOp.response?.appId || "";
+        }
+        if (!appId) throw new Error("تعذر استخراج appId لتطبيق الأندرويد.");
+
+        await new Promise((r) => setTimeout(r, 2000));
+        const cfgResp = await apiFetch(
+          `https://firebase.googleapis.com/v1beta1/projects/${projectId}/androidApps/${appId}/config`,
+          { method: "GET" },
+          4
+        );
+        generatedJsonString = base64ToUtf8(cfgResp.configFileContents);
+        generatedGoogleServices = JSON.parse(generatedJsonString);
+        setStepState("st3", "done");
+
+        // 4. Create Firestore Database
+        activeStep = "st4";
+        setStepState("st4", "active");
+        try {
+          const fsOp = await apiFetch(
+            `https://firestore.googleapis.com/v1/projects/${projectId}/databases?databaseId=(default)`,
+            {
+              method: "POST",
+              body: JSON.stringify({ type: "FIRESTORE_NATIVE", locationId })
+            },
+            3
+          );
+          if (fsOp.name) {
+            await pollOperation("https://firestore.googleapis.com/v1", fsOp.name);
+          }
+        } catch (fsErr) {
+          if (fsErr.status !== 409) throw fsErr;
+        }
+        setStepState("st4", "done");
+
+        // 5. Publish firestore.rules
+        activeStep = "st5";
+        setStepState("st5", "active");
+        const rulesText = await loadFirestoreRulesText();
+        const ruleset = await apiFetch(
+          `https://firebaserules.googleapis.com/v1/projects/${projectId}/rulesets`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              source: { files: [{ name: "firestore.rules", content: rulesText }] }
+            })
+          },
+          2
+        );
+        const releaseName = `projects/${projectId}/releases/cloud.firestore`;
+        try {
+          await apiFetch(`https://firebaserules.googleapis.com/v1/${releaseName}`, {
+            method: "PATCH",
+            body: JSON.stringify({ release: { name: releaseName, rulesetName: ruleset.name } })
+          });
+        } catch (patchErr) {
+          if (patchErr.status === 404) {
+            await apiFetch(`https://firebaserules.googleapis.com/v1/projects/${projectId}/releases`, {
+              method: "POST",
+              body: JSON.stringify({ name: releaseName, rulesetName: ruleset.name })
+            });
+          } else {
+            throw patchErr;
+          }
+        }
+        setStepState("st5", "done");
+
+        // 6. Enable Email/Password & Create Admin Account
+        activeStep = "st6";
+        setStepState("st6", "active");
+        await apiFetch(
+          `https://identitytoolkit.googleapis.com/admin/v2/projects/${projectId}/config?updateMask=signIn.email`,
+          {
+            method: "PATCH",
+            headers: { "x-goog-user-project": projectId },
+            body: JSON.stringify({ signIn: { email: { enabled: true, passwordRequired: true } } })
+          },
+          3
+        );
+
+        const webApiKey = generatedGoogleServices?.client?.[0]?.api_key?.[0]?.current_key;
+        if (!webApiKey) throw new Error("مفتاح API غير متوفر في google-services.json.");
+
+        const signupResp = await fetch(
+          `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${encodeURIComponent(webApiKey)}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: adminEmail,
+              password: adminPassword,
+              returnSecureToken: true
+            })
+          }
+        );
+        if (!signupResp.ok) {
+          const sErr = await signupResp.json().catch(() => ({}));
+          const msg = sErr?.error?.message || "";
+          if (msg !== "EMAIL_EXISTS") {
+            throw new Error("تعذر إنشاء حساب المشرف: " + (msg || signupResp.status));
+          }
+        }
+        setStepState("st6", "done");
+
+        // Deep link & file download
+        const payloadObj = {
+          schoolName,
+          adminEmail,
+          googleServices: generatedGoogleServices
+        };
+        const encoded = utf8ToUrlSafeBase64(JSON.stringify(payloadObj));
+        document.getElementById("returnAppBtn").href = `ahlalquran://import-school?payload=${encoded}`;
+        document.getElementById("doneCard").classList.remove("hidden");
+        downloadGoogleServicesFile();
+      } catch (err) {
+        setStepState(activeStep, "error");
+        const msg = err?.message || "حدث خطأ غير متوقع";
+        if (msg.toLowerCase().includes("terms") || msg.toLowerCase().includes("tos")) {
+          document.getElementById("tosRecoveryBox").classList.remove("hidden");
+        } else {
+          showFormError("تعذر إكمال التجهيز: " + msg);
+        }
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function downloadGoogleServicesFile() {
+      if (!generatedJsonString) return;
+      const blob = new Blob([generatedJsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "google-services.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 3000);
+    }
+
+    handleOAuthReturn();
+  </script>
+</body>
+</html>
