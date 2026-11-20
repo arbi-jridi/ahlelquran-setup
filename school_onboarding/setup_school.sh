@@ -187,6 +187,9 @@ fi
 
 echo "[6/7] جاري نشر قواعد الأمان (firestore.rules) ..."
 RULES_PATH="${REPO_ROOT}/firestore.rules"
+if [[ ! -f "${RULES_PATH}" && -f "${SCRIPT_DIR}/firestore.rules" ]]; then
+  RULES_PATH="${SCRIPT_DIR}/firestore.rules"
+fi
 if [[ ! -f "${RULES_PATH}" ]]; then
   RULES_PATH="/tmp/ahlalquran_firestore.rules"
   curl -fsSL "${RAW_RULES_URL}" -o "${RULES_PATH}"
@@ -224,6 +227,13 @@ else
 fi
 
 echo "[7/7] جاري تفعيل Email/Password Auth وإنشاء حساب المشرف ..."
+curl -sS -X POST \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  -H "x-goog-user-project: ${PROJECT_ID}" \
+  -H "Content-Type: application/json" \
+  -d '{}' \
+  "https://identitytoolkit.googleapis.com/v2/projects/${PROJECT_ID}/identityPlatform:initializeAuth" >/dev/null || true
+
 curl -sS -X PATCH \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -H "x-goog-user-project: ${PROJECT_ID}" \
@@ -235,8 +245,11 @@ WEB_API_KEY="$(python3 -c "
 import sys, json
 with open(sys.argv[1], 'r', encoding='utf-8') as f:
     d = json.load(f)
-print(d['client'][0]['api_key'][0]['current_key'])
-" "${OUT_FILE}")"
+clients = d.get('client', [])
+match = next((c for c in clients if c.get('client_info', {}).get('android_client_info', {}).get('package_name') == sys.argv[2]), None)
+target = match or (clients[0] if clients else {})
+print(target.get('api_key', [{}])[0].get('current_key', ''))
+" "${OUT_FILE}" "${PACKAGE_NAME}")"
 
 SIGNUP_RESP="$(curl -sS -X POST \
   -H "Content-Type: application/json" \
